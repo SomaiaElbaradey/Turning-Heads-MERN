@@ -40,7 +40,7 @@ module.exports.userRegister = async function (req, res) {
         mail: req.body.mail,
         password: req.body.password,
         username: req.body.username,
-        lastname: reg.body.lastname
+        lastName: req.body.lastName
     });
 
     //add salt before the hashed password, then hash it.

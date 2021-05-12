@@ -78,7 +78,7 @@ module.exports.users = mongoose.model("User", schema);
 function validateUser(user) {
   const schema = Joi.object({
     mail: Joi.string().email().required().trim().lowercase().min(6).max(64),
-    userName: Joi.string().required().trim().min(7).max(64),
+    username: Joi.string().required().trim().min(7).max(64),
     firstName: Joi.string().min(3).max(15).trim().required(),
     lastName: Joi.string().min(3).max(15).trim().required(),
     password: Joi.string()

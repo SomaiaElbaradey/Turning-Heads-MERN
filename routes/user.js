@@ -7,5 +7,6 @@ const { userLogin, userRegister, getAll, deleteMe, updateMe, verify,
 const auth = require('../middlewares/auth');
 
 userRouter.post("/login", userLogin);
+userRouter.post("/register", userRegister);
 
 module.exports = userRouter;
