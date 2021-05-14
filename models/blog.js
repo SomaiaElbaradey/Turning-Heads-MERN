@@ -3,6 +3,33 @@ const mongoose = require("mongoose");
 const Joi = require("joi");
 Joi.objectId = require("joi-objectid")(Joi);
 
+const commentsSchema = new mongoose.Schema({
+  body: {
+    type: String
+  },
+  username: {
+    type: String,
+    required: true,
+    minlength: 3,
+    maxlength: 30,
+  },
+  _user:{
+    type: mongoose.Types.ObjectId,
+    ref: "Users",
+  },
+  picture: {
+    type: String
+  },
+  created_at: {
+    type: Date, 
+    required: true, 
+    default: Date.now
+  },
+  likes:{
+    type: Number
+  }
+});
+
 // Schema
 const schema = new mongoose.Schema({
   userId: {
@@ -32,33 +59,6 @@ const schema = new mongoose.Schema({
   },
 });
 
-const commentsSchema = new mongoose.Schema({
-  body: {
-    type: String
-  },
-  username: {
-    type: String,
-    required: true,
-    minlength: 3,
-    maxlength: 30,
-  },
-  _user:{
-    type: mongoose.Types.ObjectId,
-    ref: "Users",
-  },
-  picture: {
-    type: String
-  },
-  created_at: {
-    type: Date, 
-    required: true, 
-    default: Date.now
-  },
-  likes:{
-    type: Number
-  }
-});
-
 module.exports.blogs = mongoose.model("Blog", schema);
 
 //validate blog
@@ -66,6 +66,8 @@ function validateBlog(Blog) {
   const schema = Joi.object({
     title: Joi.string().min(2).max(60),
     body: Joi.string().min(60).max(1000),
+    imgUrl: Joi.string(),
+    tags: Joi.array(),
   });
 
   return schema.validate(Blog);

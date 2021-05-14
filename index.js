@@ -6,6 +6,7 @@ const error = require('./middlewares/error');
 
 require('./dbConnection');
 const userRouter = require('./routes/user');
+const blogRouter = require('./routes/blog');
 const cors = require('cors')
 
 if (!config.get('jwtKey')) {
@@ -34,6 +35,7 @@ let logs = (req, res, next) => {
 app.use(logs);
 
 app.use('/api/user', userRouter);
+app.use('/api/blog', blogRouter);
 
 app.use(error);
 
