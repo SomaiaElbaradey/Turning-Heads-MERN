@@ -31,7 +31,7 @@ module.exports.userRegister = async function (req, res) {
     if (user) return res.status(409).send("email already exists.");
 
     //Checkin if the userName exists
-    user = await users.findOne({ userName: req.body.userName });
+    user = await users.findOne({ username: req.body.username });
     if (user) return res.status(409).send("username already exists.");
 
     //save the user in Database
