@@ -17,7 +17,7 @@ module.exports.userLogin = async function (req, res) {
     if (user.isActive != true) res.status(404).send("Please verify your email to login.");
 
     const webToken = user.generateToken("96h");
-    res.send(webToken);
+    res.send({webToken, user: user._id});
 };
 
 module.exports.userRegister = async function (req, res) {
@@ -40,7 +40,8 @@ module.exports.userRegister = async function (req, res) {
         mail: req.body.mail,
         password: req.body.password,
         username: req.body.username,
-        lastName: req.body.lastName
+        lastName: req.body.lastName,
+        isActive: true
     });
 
     //add salt before the hashed password, then hash it.

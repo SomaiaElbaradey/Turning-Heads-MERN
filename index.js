@@ -9,10 +9,10 @@ const userRouter = require('./routes/user');
 const blogRouter = require('./routes/blog');
 const cors = require('cors')
 
-if (!config.get('jwtKey')) {
-    console.log("FATAL ERROR: jwtKey is not defined.")
-    process.exit(1);
-}
+// if (!config.get('jwtKey')) {
+//     console.log("FATAL ERROR: jwtKey is not defined.")
+//     process.exit(1);
+// }
 app.use(express.json());
 app.use(express.json({ limit: "50mb" }));
 

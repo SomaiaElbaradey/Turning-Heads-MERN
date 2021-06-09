@@ -1,4 +1,3 @@
-const express = require("express");
 const { blogs, validateBlog } = require("../models/blog");
 
 //return all for one user
@@ -65,9 +64,7 @@ module.exports.addOne = async function (req, res, next) {
       userId: req.user._id,
       comment: [],
     });
-
     await articleCreated.save();
-
     res.send("article was added successfully");
   } catch (e) {
     next(e);
