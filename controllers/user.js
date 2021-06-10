@@ -16,7 +16,7 @@ module.exports.userLogin = async function (req, res) {
     //check mail verification 
     if (user.isActive != true) res.status(404).send("Please verify your email to login.");
 
-    const webToken = user.generateToken("96h");
+    const webToken = user.generateToken();
     res.send({webToken, user: user._id});
 };
 

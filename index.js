@@ -13,6 +13,7 @@ const cors = require('cors')
 //     console.log("FATAL ERROR: jwtKey is not defined.")
 //     process.exit(1);
 // }
+
 app.use(express.json());
 app.use(express.json({ limit: "50mb" }));
 
@@ -39,6 +40,8 @@ app.use('/api/blog', blogRouter);
 
 app.use(error);
 
-app.listen(process.env.PORT || 3919, () => {
+var server = app.listen(process.env.PORT || 3919, () => {
     console.info(`server listening on port 3919`);
 });
+
+module.exports = server

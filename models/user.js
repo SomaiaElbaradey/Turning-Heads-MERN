@@ -60,17 +60,21 @@ const schema = new mongoose.Schema({
   followers: {
     type: [{ follower_Id: mongoose.Types.ObjectId }],
   },
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 // JWT generation method
-schema.methods.generateToken = function (expiry) {
+schema.methods.generateToken = function () {
   return jwt.sign(
     {
       _id: this._id,
       isAdmin: this.isAdmin,
     },
     config.get("jwtKey"),
-    { expiresIn: expiry }
+    { expiresIn: "96h" }
   );
 };
 module.exports.users = mongoose.model("User", schema);
