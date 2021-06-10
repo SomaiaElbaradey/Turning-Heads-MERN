@@ -1,60 +1,109 @@
-const { blogs, validateBlog } = require("../models/blog");
+const { blogs, validateComment } = require("../models/blog");
 
-//modify article
-module.exports.updateOne = async function (req, res, next) {
-  try {
-    const found = await blogs.findOne({ _id: req.params.id });
-    if (!found) return res.send("not found");
+//add new comment on one blog
+module.exports.addcomment = async function (req, res, next) {
+  //find the blog that the comment belongs to
+  const article = await blogs.findOne({ _id: req.params.id });
+  if (!article) return res.status(404).send("no articles found");
 
-    Object.keys(req.body).forEach((key) => {
-      found[key] = req.body[key];
-    });
+  //link the person who commwnted with his data
+  req.body._user = req.user._id;
 
-    await found.save();
-    res.send(found);
-  } catch (e) {
-    next(e);
-  }
-};
-
-//delete article
-module.exports.deleteOne = async function (req, res, next) {
-  try {
-    const deleted = await blogs.deleteOne({ _id: req.params.id });
-    if (!deleted) return res.send("no articles found");
-    res.send("article deleted");
-  } catch (e) {
-    next(e);
-  }
-};
-
-//add article
-module.exports.addOne = async function (req, res, next) {
-  const { error } = validateBlog(req.body);
+  //validate the comment
+  const { error } = validateComment(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
+  //clone the comments and add the new one
+  const comments = article.comment;
+  const newComments = [...comments, req.body];
+
+  //update the blog with the new comment
+  await blogs.findByIdAndUpdate(article._id, { comment: newComments });
+  res.send("comment was added successfully");
+};
+
+//return all comments for one article
+module.exports.getAllComments = async function (req, res) {
+  //find the blog that the comments belong to
+  const artcilaya = await blogs.findOne({ _id: req.params.id });
+  if (!artcilaya) return res.status(404).send("no articles found");
+
+  res.status(200).send(artcilaya.comment);
+};
+
+//retun one comment
+module.exports.getComment = async function (req, res, next) {
   try {
-    const articleCreated = new blogs({
-      title: req.body.title,
-      body: req.body.body,
-      imgUrl: req.body.imgUrl,
-      tags: req.body.tags,
-      userId: req.user._id,
-      comment: [],
-    });
-    await articleCreated.save();
-    res.send("article was added successfully");
+    //find the blog that the comment belongs to
+    const artcilaya = await blogs.findOne({ _id: req.params.id });
+    if (!artcilaya) return res.status(404).send("no articles found");
+
+    //find the wanted comment
+    const comments = artcilaya.comment;
+    const theComment = comments.find((item) => item._id == req.params.comment);
+
+    res.send(theComment);
+  } catch (err) {
+    next(err);
+  }
+};
+
+//delete one comment
+module.exports.deleteComment = async function (req, res, next) {
+  try {
+    //find the blog that the comment belongs to
+    const artcilaya = await blogs.findOne({ _id: req.params.id });
+    if (!artcilaya) return res.status(404).send("no articles found");
+
+    //allow only the owner of the article to delete comment
+    if (artcilaya.userId != req.user._id)
+      return res.status(405).send("not allowed operation.");
+
+    //find the wanted comment and remove it
+    const comments = artcilaya.comment;
+    const newComments = comments.filter(
+      (comment) => comment._id != req.params.comment
+    );
+
+    //update the blog without the deleted comment
+    await blogs.findByIdAndUpdate(artcilaya._id, { comment: newComments });
+    res.send("comment deleted");
   } catch (e) {
     next(e);
   }
 };
 
-//retun one article
-module.exports.getOne = async function (req, res, next) {
+//modify comment
+module.exports.updateComment = async function (req, res, next) {
   try {
+    //find the blog that the comment belongs to
     const artcilaya = await blogs.findOne({ _id: req.params.id });
-    res.send(artcilaya);
-  } catch (err) {
-    next(err);
+    if (!artcilaya) return res.status(404).send("no articles found");
+
+    //find the wanted comment
+    let comments = artcilaya.comment;
+    const theComment = comments.find((item) => item._id == req.params.comment);
+
+    //allow only the owner of the comment to modify it
+    if (theComment._user != req.user._id)
+      return res.status(405).send("not allowed operation.");
+
+    //update comment with the new values
+    const commentUpdated = {
+      _id: theComment._id,
+      username: theComment.username,
+      body: req.body.body,
+      _user: theComment._user,
+    };
+
+    const commentIndex = comments.findIndex(
+      (comment) => comment._id == req.params.comment
+    );
+    comments[commentIndex] = commentUpdated;
+
+    await blogs.findByIdAndUpdate(artcilaya._id, { comment: comments });
+    res.send("comment updated");
+  } catch (e) {
+    next(e);
   }
 };

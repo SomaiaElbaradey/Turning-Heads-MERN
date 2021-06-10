@@ -3,6 +3,8 @@ const { blogs, validateBlog } = require("../models/blog");
 //return all for one user
 module.exports.getAllOneUser = async function (req, res) {
   const articles = await blogs.find({ userId: req.params.uid });
+  if (!articles) return res.status(404).send("not found");
+
   res.json(articles);
 };
 
@@ -28,7 +30,7 @@ module.exports.getOne = async function (req, res, next) {
 module.exports.updateOne = async function (req, res, next) {
   try {
     const found = await blogs.findOne({ _id: req.params.id });
-    if (!found) return res.send("not found");
+    if (!found) return res.status(404).send("not found");
 
     Object.keys(req.body).forEach((key) => {
       found[key] = req.body[key];
@@ -45,7 +47,7 @@ module.exports.updateOne = async function (req, res, next) {
 module.exports.deleteOne = async function (req, res, next) {
   try {
     const deleted = await blogs.deleteOne({ _id: req.params.id });
-    if (!deleted) return res.send("no articles found");
+    if (!deleted) return res.status(404).send("no articles found");
     res.send("article deleted");
   } catch (e) {
     next(e);
