@@ -50,7 +50,7 @@ module.exports.userRegister = async function (req, res) {
   await new_user.save();
 
   const token = new_user.generateToken("96h");
-  sendActivationMail(new_user.mail, new_user.userName, new_user._id);
+  sendActivationMail(new_user.mail, new_user.username, new_user._id);
   //send the id to the user
   res
     .header("x-login-token", token)
