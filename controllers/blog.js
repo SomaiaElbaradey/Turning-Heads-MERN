@@ -16,6 +16,8 @@ module.exports.getAll = async function (req, res) {
 module.exports.getOne = async function (req, res, next) {
   try {
     const artcilaya = await blogs.findOne({ _id: req.params.id });
+    if (!artcilaya)
+      return res.status(404).send("the artcilaya with given id not existed.");
     res.send(artcilaya);
   } catch (err) {
     next(err);

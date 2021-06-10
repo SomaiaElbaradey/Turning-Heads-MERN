@@ -1,3 +1,4 @@
 {
-    "jwtKey": "blogKey"
+    "jwtKey": "blogKey",
+    "db": "mongodb://localhost:27017/blogDB_tests"
 }

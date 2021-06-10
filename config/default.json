@@ -3,5 +3,6 @@
     "name": "blog",
     "host": "localhost",
     "port": "2919",
+    "db": "mongodb://localhost:27017/blogDB",
     "redis_local_host": "127.0.0.1"
 }
