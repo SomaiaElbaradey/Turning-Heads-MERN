@@ -33,7 +33,7 @@ module.exports.sendActivationMail = async function (
                         <h3>Almost done, ${username}! To complete your Turning Heads sign up, we just need to verify your 
                             email address: ${userMail}</h3>
                         <div>
-                         <a none;" href="https://.../api/user/verify/${userId}">
+                         <a none;" href="https://turning-heads.herokuapp.com/api/user/verify/${userId}">
                          <button style="height: 30px; background-color: #44c1c1c7; 
                          border: none; border-radius: 5%; margin: 10px; cursor: pointer;"> Verify your mail address</button><br>
                          </a>

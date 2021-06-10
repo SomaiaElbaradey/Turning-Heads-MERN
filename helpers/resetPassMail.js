@@ -28,7 +28,7 @@ module.exports.sendResetMail = async function (userMail, userId) {
                                     padding: 60px; border-radius: 5px; border: rgb(69, 85, 83) 2px solid;">
                         <h3>To confirm your new password, click the link below </h3>
                         <div>
-                         <a none;" href="https://../resetPassword/${userId}">
+                         <a none;" href="https://turning-heads.herokuapp.com/api/user/resetPassword/${userId}">
                          <button style="height: 30px; background-color: #44c1c1c7; 
                          border: none; border-radius: 5%; margin: 10px; cursor: pointer;"> Confirm your password</button><br>
                          </a>
