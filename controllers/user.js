@@ -54,7 +54,7 @@ module.exports.userRegister = async function (req, res) {
   //send the id to the user
   res
     .header("x-login-token", token)
-    .send({ message: "user was registered successfully" });
+    .send({ message: "user was registered successfully, Please login" });
 };
 
 //get users
