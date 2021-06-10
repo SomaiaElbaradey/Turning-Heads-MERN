@@ -1,3 +1,2 @@
 # blog-api
 
-Blogging Site
