@@ -110,7 +110,7 @@ Before you start, make sure you have <a href="https://nodejs.org/en/download/">N
    ```
    
 ## Running tests
-3. To get the app tests running, type the following in your Command Prompt
+- To get the app tests running, type the following in your Command Prompt
    ```JS
    npm test
    ```
