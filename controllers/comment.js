@@ -1,4 +1,5 @@
 const { blogs, validateComment } = require("../models/blog");
+const { users } = require("../models/user");
 
 //add new comment on one blog
 module.exports.addcomment = async function (req, res, next) {
@@ -13,9 +14,13 @@ module.exports.addcomment = async function (req, res, next) {
   const { error } = validateComment(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
+  //find commentr
+  const commenter = await users.findOne({ _id: req.user._id});
+  const user_name = `${commenter.firstName} ${commenter.lastName}`
+
   //clone the comments and add the new one
   const comments = article.comment;
-  const newComments = [...comments, req.body];
+  const newComments = [...comments, {body: req.body.body, username: user_name}];
 
   //update the blog with the new comment
   await blogs.findByIdAndUpdate(article._id, { comment: newComments });
