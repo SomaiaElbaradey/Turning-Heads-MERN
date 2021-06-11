@@ -9,6 +9,7 @@ const userRouter = require('./routes/user');
 const blogRouter = require('./routes/blog');
 const cors = require('cors')
 
+app.use(express.static('public'))
 app.use(express.json());
 app.use(express.json({ limit: "50mb" }));
 

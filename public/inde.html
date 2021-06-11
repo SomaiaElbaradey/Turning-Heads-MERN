@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body style="margin: 29px auto; width: 80%">
+    <h1>Welcome to Turning Heads API</h1>
+    <div>
+      "Turning Heads" is a simple MERN Stack blog application where many people
+      can share articles with each other.
+    </div>
+
+    <div>
+      <h2>About The Project</h2>
+
+      <h3>App Functionality</h3>
+      <p>
+        Turning Heads provides many functionalities to the app guest and
+        registered user:
+      </p>
+      <ul>
+        <li>
+          A guest can:
+          <ol>
+            <li>Reqister</li>
+            <li>View all the articles with details</li>
+            <li>Contact with the admin</li>
+          </ol>
+        </li>
+      </ul>
+
+      <ul>
+        <li>
+          Registered user can:
+          <ol>
+            <li>Login</li>
+            <li>View all the articles with details</li>
+            <li>View his own articles</li>
+            <li>View anyone's article in detail</li>
+            <li>Modify or delete his articles</li>
+            <li>Add comment on anyone's article</li>
+            <li>Modify his comment</li>
+            <li>Delete comments from his articles</li>
+            <li>Reset his account passwotd</li>
+          </ol>
+        </li>
+      </ul>
+
+      <h3>Testing Fearures</h3>
+      <ul>
+        <li>
+          Unit test:
+          <ol>
+            Generation of jwt auth token test
+          </ol>
+        </li>
+      </ul>
+
+      <ul>
+        <li>
+          Integration tests:
+          <ol>
+            <li>Getting all the blogs test</li>
+            <li>Getting unexisting blog test</li>
+            <li>Posting from unassigned user test</li>
+            <li>Unvalid article value test</li>
+            <li>Posting is done when article is valid test</li>
+          </ol>
+        </li>
+      </ul>
+    </div>
+
+    <h2>App Technologies</h2>
+    <ul>
+      <li>Backend development Using (ExpressJs - NodeJS)</li>
+      <li>No SQL Database using mongodb</li>
+      <li>Front End development using React Redux</li>
+    </ul>
+
+    <h2>Getting Started</h2>
+    <h3>Prerequisites</h3>
+    <p>
+      Before you start, make sure you have
+      <a href="https://nodejs.org/en/download/">NodeJS</a> installed.
+    </p>
+
+    <h3>Installation</h3>
+    <ul>
+      <li>
+        Clone the repo
+        <p>git clone https://github.com/SomaiaElbaradey/Turning-Heads-API</p>
+      </li>
+
+      <li>
+        Use the Node package manager <a href="https://www.npmjs.com/">npm</a> to
+        install the required packages
+        <p>npm install</p>
+      </li>
+      <li>
+        To get the development server running, type the following in your
+        Command Prompt
+        <p>node index.js</p>
+      </li>
+    </ul>
+
+    <h3>Running tests</h3>
+    <div>
+      To get the app tests running, type the following in your Command Prompt
+      <p>npm test</p>
+    </div>
+
+    <h3>Usage</h3>
+    <div>
+      <h4>Deployment</h4>
+      <p>
+        The API deployed at Heroku:<a
+          href="https://turning-heads.herokuapp.com/"
+        >
+          Turning Heads API
+        </a>
+      </p>
+    </div>
+
+    <h3>API endpoints</h3>
+    <div>
+      <h4>User Features</h4>
+      <ul>
+        <li>
+          Registration: POST /api/user/register
+          <p>
+            Request Body: { "mail": "example@example.com", "password":
+            "Password", "username": "username", "firstName": "first name",
+            "lastName": "last name" }
+          </p>
+        </li>
+        <li>
+          Login: POST /api/user/login
+          <p>
+            Request Body: { "mail": "example@example.com", "password":
+            "Password" }
+          </p>
+        </li>
+        <li>
+          Reset Password: POST /api/user/resetPassword
+          <p>
+            Request Body: { "mail": "example@example.com", "newPassword":
+            "newPassword" }
+          </p>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Articles Features</h4>
+      <ul>
+        <li>Get all articles: GET /api/blog</li>
+        <li>Get all articles for one user: GET /api/blog/:id</li>
+        <li>Get one specific article: GET /api/blog/get/:id</li>
+        <li>
+          Publish new article: POST /api/blog/
+          <p>
+            Body: { "title": "article title", "body": "article body", "imgUrl":
+            "article image url", "tags": ["article tag 01", "article tag 02"] }
+          </p>
+          <p>Header: "x-login-token": "your login token"</p>
+        </li>
+        <li>
+          Delete one specific article: DELETE /api/blog/:id
+          <p>Header: "x-login-token": "your login token"</p>
+        </li>
+        <li>
+          Modify existing article: PATCH /api/blog/:id
+          <p>
+            Body: { "title": "modified article title", "body": "article body",
+            "imgUrl": "article image url", "tags": ["article tag 01", "article
+            tag 02"] }
+          </p>
+          <p>Header: "x-login-token": "your login token"</p>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Comments Features</h4>
+      <ul>
+        <li>Get all Comments for one article: GET /api/blog/comments/:id</li>
+        <li>Get one specific comment: GET /api/blog/comment/:id/:comment</li>
+        <li>
+          Add comment on specific article: POST /api/blog/comment/:id
+          <p>
+            Body: { "username": "the name of commenter", "body": "comment body"
+            }
+          </p>
+          <p>Header: "x-login-token": "your login token"</p>
+        </li>
+        <li>
+          Delete one specific comment on your own article: DELETE
+          /api/blog/comment/:id/:comment
+          <p>Header: "x-login-token": "your login token"</p>
+        </li>
+        <li>
+          Modify my own comment on one article: PATCH
+          /api/blog/comment/:id/:comment
+          <p>Body: { "body": "modified comment" }</p>
+          <p>Header: "x-login-token": "your login token"</p>
+        </li>
+      </ul>
+    </div>
+
+    <h3>
+      Front End Front-end repo:
+      <a href="https://github.com/SomaiaElbaradey/Turning-Heads"
+        >Turning Heads - Front Repo</a
+      >
+    </h3>
+  </body>
+</html>
