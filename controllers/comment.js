@@ -15,12 +15,13 @@ module.exports.addcomment = async function (req, res, next) {
   if (error) return res.status(400).send(error.details[0].message);
 
   //find commentr
-  const commenter = await users.findOne({ _id: req.user._id});
-  const user_name = `${commenter.firstName} ${commenter.lastName}`
+  const commenter = await users.findOne({ _id: req.user._id });
+  const user_name = `${commenter.firstName} ${commenter.lastName}`;
+  req.body.username = user_name;
 
   //clone the comments and add the new one
   const comments = article.comment;
-  const newComments = [...comments, {body: req.body.body, username: user_name}];
+  const newComments = [...comments, req.body];
 
   //update the blog with the new comment
   await blogs.findByIdAndUpdate(article._id, { comment: newComments });
@@ -90,7 +91,7 @@ module.exports.updateComment = async function (req, res, next) {
     const theComment = comments.find((item) => item._id == req.params.comment);
 
     //allow only the owner of the comment to modify it
-    if (theComment._user != req.user._id)
+    if (theComment._user != req.user._id) 
       return res.status(405).send("not allowed operation.");
 
     //update comment with the new values
