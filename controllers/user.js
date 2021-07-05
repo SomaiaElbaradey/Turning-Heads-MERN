@@ -132,7 +132,7 @@ module.exports.addFollower = async function (req, res) {
   let following = await users.findById(req.params.id);
   if (!following) return res.status(404).send("user doesn't exist.");
   if (req.user._id == following._id)
-    return res.status(404).send("you can't follow yourself!");
+    return res.status(404).send("you can't follow yourself dummy!");
   await users.findByIdAndUpdate(follower.id, {
     $addToSet: { following: { _id: following._id } },
   });
@@ -140,4 +140,70 @@ module.exports.addFollower = async function (req, res) {
     $addToSet: { followers: { _id: follower._id } },
   });
   res.status(200).send(`you have followed ${following.firstName}`);
+};
+
+//return names of following
+module.exports.followingNames = async function (req, res) {
+  const found = await users.findOne({ _id: req.params.id }, "following");
+
+  let ids = [];
+  found.following.forEach((item) => {
+    ids.push(item._id.toString());
+  });
+  let names = [];
+  users.find({ _id: { $in: ids } }).then((u) => {
+    u.forEach((item) => {
+      names.push({ name: `${item.firstName} ${item.lastName}`, _id: item._id });
+      return names;
+    });
+    res.send(names);
+  });
+};
+
+//return names of followers
+module.exports.followersNames = async function (req, res) {
+  const found = await users.findOne({ _id: req.params.id }, "followers");
+
+  let ids = [];
+  found.followers.forEach((item) => {
+    ids.push(item._id.toString());
+  });
+  let names = [];
+  users.find({ _id: { $in: ids } }).then((u) => {
+    u.forEach((item) => {
+      names.push({ name: `${item.firstName} ${item.lastName}`, _id: item._id });
+      return names;
+    });
+    res.send(names);
+  });
+};
+
+//unfollow user
+module.exports.unfollow = async function (req, res) {
+  if (req.user._id == req.params.userId)
+    return res.status(400).send("you cannot unfollow yourself dummy!");
+
+  await users.findOne({ _id: req.user._id }).then((userItem) => {
+    const myArr = userItem.following.filter((follower) => {
+      return follower._id.toString() == req.params.userId.toString();
+    });
+
+    if (myArr.length === 0)
+      return res.status(400).send("you already don't follow them");
+
+    const index = userItem.following.findIndex(
+      ({ _id }) => _id == req.params.userId
+    );
+    userItem.following.splice(index, 1);
+    userItem.save();
+    users
+      .findOne({ _id: req.params.userId })
+      .then((u) => {
+        const index = u.followers.indexOf(req.user._id);
+        u.followers.splice(index, 1);
+        u.save();
+      })
+      .catch((e) => res.send(e));
+    res.send("you unfollowed them");
+  });
 };

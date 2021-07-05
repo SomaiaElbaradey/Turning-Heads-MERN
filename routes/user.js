@@ -1,8 +1,8 @@
 const express = require('express');
 const userRouter = new express.Router();
 
-const { userLogin, userRegister, getAll, deleteMe, updateMe, verify,
-    resetPassword, confirmPassword, addFollower } = require('../controllers/user');
+const { userLogin, userRegister, getAll, deleteMe, updateMe, verify, unfollow,
+    resetPassword, confirmPassword, addFollower, followersNames, followingNames } = require('../controllers/user');
 
 const auth = require('../middlewares/auth');
 
@@ -12,5 +12,9 @@ userRouter.get("/verify/:id", verify);
 userRouter.post("/resetPassword/", resetPassword);
 userRouter.get("/resetPassword/:id", confirmPassword);
 userRouter.post("/newFollow/:id", auth, addFollower);
+userRouter.get("/following/:id", auth, followingNames);
+userRouter.get("/follower/:id", auth, followersNames);
+userRouter.patch("/unfollow/:userId", auth, unfollow);
+
 
 module.exports = userRouter;
