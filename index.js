@@ -36,7 +36,7 @@ app.use('/api/blog', blogRouter);
 
 app.use(error);
 
-var server = app.listen(process.env.PORT || 3919, () => {
+var server = app.listen(process.env.PORT || 4000, () => {
     console.info(`server listening on port 3919`);
 });
 

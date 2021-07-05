@@ -123,3 +123,21 @@ module.exports.confirmPassword = async function (req, res) {
   res.status(200);
   res.sendFile("views/resetedPassword.html", { root: __dirname });
 };
+
+module.exports.addFollower = async function (req, res) {
+  //find the follower
+  let follower = await users.findById(req.user._id);
+  if (!follower) return res.status(404).send("follower doesn't exist.");
+  //find the folowing
+  let following = await users.findById(req.params.id);
+  if (!following) return res.status(404).send("user doesn't exist.");
+  if (req.user._id == following._id)
+    return res.status(404).send("you can't follow yourself!");
+  await users.findByIdAndUpdate(follower.id, {
+    $addToSet: { following: { _id: following._id } },
+  });
+  await users.findByIdAndUpdate(following.id, {
+    $addToSet: { followers: { _id: follower._id } },
+  });
+  res.status(200).send(`you have followed ${following.firstName}`);
+};
