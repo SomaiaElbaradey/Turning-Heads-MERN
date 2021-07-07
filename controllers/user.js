@@ -219,12 +219,13 @@ module.exports.userData = async function (req, res) {
   res.send(found);
 };
 
-//return is followed or not 
+//return is followed or not
 module.exports.isFollowed = async function (req, res) {
   const found = await users.findOne({ _id: req.user._id });
   if (!found) return res.status(404).send("user doesn't exist.");
-  let isFollowed = found.following.find( (following) => following._id == `${req.params.id}` );
-  isFollowed? isFollowed = true: isFollowed = false;
-  console.log(isFollowed);
+  let isFollowed = found.following.find(
+    (following) => following._id == `${req.params.id}`
+  );
+  isFollowed ? (isFollowed = true) : (isFollowed = false);
   res.send(isFollowed);
 };
