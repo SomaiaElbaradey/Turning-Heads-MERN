@@ -124,6 +124,7 @@ module.exports.confirmPassword = async function (req, res) {
   res.sendFile("views/resetedPassword.html", { root: __dirname });
 };
 
+//follow user
 module.exports.addFollower = async function (req, res) {
   //find the follower
   let follower = await users.findById(req.user._id);
@@ -216,4 +217,14 @@ module.exports.userData = async function (req, res) {
   if (!found) return res.status(404).send("user doesn't exist.");
 
   res.send(found);
+};
+
+//return is followed or not 
+module.exports.isFollowed = async function (req, res) {
+  const found = await users.findOne({ _id: req.user._id });
+  if (!found) return res.status(404).send("user doesn't exist.");
+  let isFollowed = found.following.find( (following) => following._id == `${req.params.id}` );
+  isFollowed? isFollowed = true: isFollowed = false;
+  console.log(isFollowed);
+  res.send(isFollowed);
 };

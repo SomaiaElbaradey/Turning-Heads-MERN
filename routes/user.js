@@ -15,6 +15,7 @@ const {
   addFollower,
   followersNames,
   followingNames,
+  isFollowed
 } = require("../controllers/user");
 
 const auth = require("../middlewares/auth");
@@ -29,6 +30,7 @@ userRouter.get("/following/:id", auth, followingNames);
 userRouter.get("/follower/:id", auth, followersNames);
 userRouter.get("/:id", auth, userData);
 userRouter.get("/", auth, getAll);
+userRouter.get("/isFollowed/:id", auth, isFollowed);
 userRouter.delete("/", auth, deleteMe);
 userRouter.patch("/unfollow/:userId", auth, unfollow);
 
