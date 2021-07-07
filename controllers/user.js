@@ -145,6 +145,7 @@ module.exports.addFollower = async function (req, res) {
 //return names of following
 module.exports.followingNames = async function (req, res) {
   const found = await users.findOne({ _id: req.params.id }, "following");
+  if (!found) return res.status(404).send("user doesn't exist.");
 
   let ids = [];
   found.following.forEach((item) => {
@@ -163,6 +164,7 @@ module.exports.followingNames = async function (req, res) {
 //return names of followers
 module.exports.followersNames = async function (req, res) {
   const found = await users.findOne({ _id: req.params.id }, "followers");
+  if (!found) return res.status(404).send("user doesn't exist.");
 
   let ids = [];
   found.followers.forEach((item) => {
@@ -206,4 +208,12 @@ module.exports.unfollow = async function (req, res) {
       .catch((e) => res.send(e));
     res.send("you unfollowed them");
   });
+};
+
+//return data of one user
+module.exports.userData = async function (req, res) {
+  const found = await users.findOne({ _id: req.params.id });
+  if (!found) return res.status(404).send("user doesn't exist.");
+
+  res.send(found);
 };
