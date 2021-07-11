@@ -57,6 +57,9 @@ Turning Heads provides many functionalities to the app guest and registered user
       <li> Modify his comment </li>
       <li> Delete comments from his articles </li>
       <li> Reset his account passwotd </li>
+      <li> Follow another user </li>
+      <li> Unfollow followed user </li>
+      <li> Check followers and following </li>
     </ol>
     </li>
 </ul>
