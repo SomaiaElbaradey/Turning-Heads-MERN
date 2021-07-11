@@ -153,6 +153,13 @@ The API deployed at Heroku:<a href="https://turning-heads.herokuapp.com/"> Turni
         }
        ```
        
+    - Unfollow user: PATCH /api/user/unfollow/:id
+    - Follow user: POST /api/user/newFollow/:id
+    - Know if you follow specific user: GET /api/user/isFollowed/:id
+    - Followers for specific user: GET /api/user/followers/:id
+    - Followings for specific user: GET /api/user/following/:id
+
+       
  2. Articles Features
     - Get all articles: GET /api/blog
     - Get all articles for one user: GET /api/blog/:id
